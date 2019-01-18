@@ -1,9 +1,7 @@
 # Main makefile for the testing framework
-.PHONY: all
+.PHONY: init
 
-all: clean
-
-clean:
+init:
 	rm -rf shunit2
 	git clone --depth 1 https://github.com/kward/shunit2
 
