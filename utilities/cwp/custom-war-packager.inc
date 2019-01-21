@@ -9,11 +9,28 @@ download_cwp() {
 
 		rm -rf "$1/.cwp-build"
 		mkdir -p "$1/.cwp-build"
-		wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/releases/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
 
-		echo "$cwp_jar_file"
+		if [[ $2 == *"SNAPSHOT"* ]]
+		then
+			wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/snapshots/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
+		else
+			if [[ $2 == *"rc"* ]]
+			then
+				wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/incrementals/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
+			else
+				wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/releases/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
+			fi
+		fi
 
-		return 0
+		downloaded=$(stat -c%s "$cwp_jar_file")
+		if [ "$downloaded" == "0" ]
+		then
+			echo "CWP jar not found"
+			return 1
+		else
+			echo "$cwp_jar_file"
+			return 0
+		fi
 	else
 		echo "Error. Missing parameters:"
 		echo "   Working directory"
