@@ -6,12 +6,6 @@ download_cwp() {
 	if [ "$#" -gt 1 ]
 	then
 		cwp_jar_file="$1/.cwp-build/cwp-cli-$2.jar"
-		if [ "$#" -eq 4 ]
-		then
-            image_tag="$4"
-        else
-            image_tag="jenkins-experimental/jenkinsfile-runner-test"
-        fi
 
 		rm -rf "$1/.cwp-build"
 		mkdir -p "$1/.cwp-build"
@@ -35,30 +29,31 @@ download_cwp() {
 # $3: Jenkins version
 # $4: Path to packager config file
 # $5: Tag for the docker image. "jenkins-experimental/jenkinsfile-runner-test" by default
-generate_docker_image_from_jar() {
+generate_docker_image_from_cwp_jar() {
 
 	if [ "$#" -gt 3 ]
-   	then
+	then
 		if [ "$#" -eq 5 ]
-   	    then
-   	        image_tag="$5"
-   	    else
-   	        image_tag="jenkins-experimental/jenkinsfile-runner-test"
-   	    fi
+		then
+			image_tag="$5"
+		else
+			image_tag="jenkins-experimental/jenkinsfile-runner-test"
+		fi
 
-   	    java -jar $2 -configPath $4 -tmpDir "$1/out/tmp/" -version $3
-        docker build -t $image_tag -f "$1/out/tmp/output/Dockerfile" "$1/out/tmp/output/"
+		java -jar $2 -configPath $4 -tmpDir "$1/out/tmp/" -version $3
+		docker build -t $image_tag -f "$1/out/tmp/output/Dockerfile" "$1/out/tmp/output/"
 
-        return 0
-   	else
-   		echo "Error. Missing parameters:"
-   		echo "   Working directory"
-   		echo "   Path to cwp.jar"
-   		echo "   Jenkins version"
-   		echo "   Path to packager config file"
-   		echo "   Tag for the docker image. 'jenkins-experimental/jenkinsfile-runner-test' by default"
-   		return 1
-   	fi
+		return 0
+	else
+		echo "Error. Missing parameters:"
+		echo "   Working directory"
+		echo "   Path to cwp.jar"
+		echo "   Jenkins version"
+		echo "   Path to packager config file"
+		echo "   Tag for the docker image. 'jenkins-experimental/jenkinsfile-runner-test' by default"
+		return 1
+	fi
+
 }
 
 # function to generate the docker image using CWP
@@ -78,12 +73,12 @@ generate_docker_image() {
 
 		return 0
 	else
-   		echo "Error. Missing parameters:"
-   		echo "   Working directory"
-   		echo "   Path to cwp.jar"
-   		echo "   Jenkins version"
-   		echo "   Path to packager config file"
-   		echo "   Tag for the docker image. 'jenkins-experimental/jenkinsfile-runner-test' by default"
+		echo "Error. Missing parameters:"
+		echo "   Working directory"
+		echo "   Path to cwp.jar"
+		echo "   Jenkins version"
+		echo "   Path to packager config file"
+		echo "   Tag for the docker image. 'jenkins-experimental/jenkinsfile-runner-test' by default"
 		return 1
 	fi
 

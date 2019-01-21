@@ -16,9 +16,9 @@ remove_string() {
 
 		echo "$result"
 		return 0
-    else
-    	echo "Error. Missing parameters. Use remove_string origin string_to_remove"
-    	return 1
-    fi
+	else
+		echo "Error. Missing parameters. Use remove_string origin string_to_remove"
+		return 1
+	fi
 
 }
