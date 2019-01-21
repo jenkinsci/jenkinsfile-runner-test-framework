@@ -1,4 +1,4 @@
-# Main makefile for the testing framework
+# Main makefile for the testing framework. It should be executed by the actual project containing the tests
 .PHONY: init
 
 init:

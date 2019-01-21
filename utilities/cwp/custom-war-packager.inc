@@ -28,7 +28,8 @@ download_cwp() {
 # $2: Path to cwp.jar
 # $3: Jenkins version
 # $4: Path to packager config file
-# $5: Tag for the docker image. "jenkins-experimental/jenkinsfile-runner-test" by default
+# $5: Tag for the docker image. "jenkins-experimental/${TEST_NAME}" by default or
+# "jenkins-experimental/jenkinsfile-runner-test" if it is run from a setUp function
 generate_docker_image_from_cwp_jar() {
 
 	if [ "$#" -gt 3 ]
@@ -37,7 +38,12 @@ generate_docker_image_from_cwp_jar() {
 		then
 			image_tag="$5"
 		else
-			image_tag="jenkins-experimental/jenkinsfile-runner-test"
+			if [ -z "${_shunit_test_}" ]
+			then
+				image_tag="jenkins-experimental/jenkinsfile-runner-test"
+			else
+				image_tag="jenkins-experimental/${_shunit_test_}"
+			fi
 		fi
 
 		java -jar $2 -configPath $4 -tmpDir "$1/out/tmp/" -version $3
@@ -50,7 +56,7 @@ generate_docker_image_from_cwp_jar() {
 		echo "   Path to cwp.jar"
 		echo "   Jenkins version"
 		echo "   Path to packager config file"
-		echo "   Tag for the docker image. 'jenkins-experimental/jenkinsfile-runner-test' by default"
+		echo "   Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
 		return 1
 	fi
 
@@ -61,7 +67,8 @@ generate_docker_image_from_cwp_jar() {
 # $2: CWP version to use
 # $3: Jenkins version
 # $4: Path to packager config file
-# $5: Tag for the docker image. "jenkins-experimental/jenkinsfile-runner-test" by default
+# $5: Tag for the docker image. "jenkins-experimental/${TEST_NAME}" by default or
+# "jenkins-experimental/jenkinsfile-runner-test" if it is run from a setUp function
 generate_docker_image() {
 
 	if [ "$#" -gt 3 ]
@@ -78,7 +85,7 @@ generate_docker_image() {
 		echo "   Path to cwp.jar"
 		echo "   Jenkins version"
 		echo "   Path to packager config file"
-		echo "   Tag for the docker image. 'jenkins-experimental/jenkinsfile-runner-test' by default"
+		echo "   Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
 		return 1
 	fi
 
