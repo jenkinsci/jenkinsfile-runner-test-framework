@@ -112,14 +112,14 @@ execute_cwp_jar_and_generate_docker_image() {
 # $4: Path to packager config file
 # $5: Tag for the docker image. "jenkins-experimental/${TEST_NAME}" by default or
 # "jenkins-experimental/jenkinsfile-runner-test" if it is run from a setUp function
-generate_docker_image() {
+download_execute_and_generate_docker_image_with_cwp() {
 
 	if [ "$#" -gt 3 ]
 	then
 		cwp_jar_file=$(download_cwp $1 $2)
 		if [ "$?" -eq "0" ]
-        then
-			generate_docker_image_from_jar $1 $cwp_jar_file $3 $4 $5
+		then
+			execute_cwp_jar_and_generate_docker_image $1 $cwp_jar_file $3 $4 $5
 			return 0
 		else
 			return 1
