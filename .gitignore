@@ -1,1 +1,5 @@
 .idea/
+.vscode/
+out
+.cwp-build/
+tests/.testing
