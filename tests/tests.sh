@@ -19,10 +19,6 @@ oneTimeSetUp() {
   downloaded_cwp_jar=$(download_cwp "$test_framework_directory" "$CWP_version")
 }
 
-setUp() {
-  echo "Initializing the test case. Ignoring so far"
-}
-
 test_with_tag() {
   jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
   assertEquals "Should retrieve exit code 0" "0" "$?"
@@ -38,14 +34,6 @@ test_with_default_tag() {
   jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" | grep 'Successfully tagged')
   assertEquals "Should retrieve exit code 0" "0" "$?"
   assertNotContains "Should not contain the given tag" "$jfr_tag" "$jenkinsfile_runner_tag"
-}
-
-oneTimeTearDown() {
-  echo "Cleaning the test suite. Ignoring so far"
-}
-
-tearDown() {
-  echo "Cleaning the test case. Ignoring so far"
 }
 
 . $sh_unit_directory/shunit2
