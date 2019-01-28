@@ -3,25 +3,32 @@ set -e
 
 # function to download the CWP jar
 # $1: Working directory
-# $2: CWP version to use
+# $2: CWP version to use. Optional
 download_cwp() {
 
-    if [ "$#" -gt 1 ]
+    if [ "$#" -ge 1 ]
     then
-        cwp_jar_file="$1/.cwp-build/cwp-cli-$2.jar"
+        if [ "$#" -eq 2 ]
+        then
+            version_to_download="$2"
+        else
+            version_to_download="$DEFAULT_CWP_VERSION"
+        fi
+
+        cwp_jar_file="$1/.cwp-build/cwp-cli-$version_to_download.jar"
 
         rm -rf "$1/.cwp-build"
         mkdir -p "$1/.cwp-build"
 
-        if [[ $2 == *"SNAPSHOT"* ]]
+        if [[ $version_to_download == *"SNAPSHOT"* ]]
         then
-            wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/snapshots/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
+            wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/snapshots/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$version_to_download/custom-war-packager-cli-$version_to_download-jar-with-dependencies.jar
         else
             if [[ $2 == *"rc"* ]]
             then
-                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/incrementals/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
+                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/incrementals/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$version_to_download/custom-war-packager-cli-$version_to_download-jar-with-dependencies.jar
             else
-                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/releases/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$2/custom-war-packager-cli-$2-jar-with-dependencies.jar
+                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/releases/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$version_to_download/custom-war-packager-cli-$version_to_download-jar-with-dependencies.jar
             fi
         fi
 
@@ -37,7 +44,7 @@ download_cwp() {
     else
         echo "Error. Missing parameters:"
         echo "   Working directory"
-        echo "   CWP version to use"
+        echo "   (Optional) CWP version to use. ${DEFAULT_CWP_VERSION} by default"
         return 1
     fi
 
@@ -102,13 +109,13 @@ execute_cwp_jar_and_generate_docker_image() {
         echo "   Path to cwp.jar"
         echo "   Jenkins version"
         echo "   Path to packager config file"
-        echo "   Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
+        echo "   (Optional) Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
         return 1
     fi
 
 }
 
-# function to generate the docker image using CWP
+# function to generate the docker image using CWP downloading a downloaded jar
 # $1: Working directory
 # $2: CWP version to use
 # $3: Jenkins version
@@ -133,7 +140,51 @@ download_execute_and_generate_docker_image_with_cwp() {
         echo "   Path to cwp.jar"
         echo "   Jenkins version"
         echo "   Path to packager config file"
-        echo "   Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
+        echo "   (Optional) Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
+        return 1
+    fi
+
+}
+
+# function to generate the docker image using the CWP docker image
+# $2: Path to packager config file
+# $3: Tag for the docker image. "jenkins-experimental/${TEST_NAME}" by default or
+# "jenkins-experimental/jenkinsfile-runner-test" if it is run from a setUp function
+generate_docker_image_from_cwp_docker_image() {
+
+    if [ "$#" -ge 1 ]
+    then
+        if [ "$#" -eq 2 ]
+        then
+            image_tag="$2"
+        else
+            if [ -z "${_shunit_test_}" ]
+            then
+                image_tag="jenkins-experimental/jenkinsfile-runner-test"
+            else
+                image_tag="jenkins-experimental/${_shunit_test_}"
+            fi
+        fi
+
+        if [ -z "${_shunit_test_}" ]
+        then
+            # In case this function is not invoked from the test but from a setUp/tearDown function
+            work_directory="/tmp/.cwp-docker"
+        else
+            work_directory="/tmp/${_shunit_test_}/.cwp-docker"
+        fi
+
+        mkdir -p "$work_directory"
+        mkdir -p "$work_directory/tmp"
+
+        docker pull jenkins/custom-war-packager
+        docker run --rm -v "$work_directory/tmp":/tmp -v "$1":/sources/packager-config.yml jenkins/custom-war-packager -configPath /sources/packager-config.yml -tmpDir /tmp/app
+        docker build -t $image_tag -f "$work_directory/tmp/app/output/Dockerfile" "$work_directory/tmp/app/output"
+        return 0
+    else
+        echo "Error. Missing parameters:"
+        echo "   Path to packager config file"
+        echo "   (Optional) Tag for the docker image. 'jenkins-experimental/TEST_NAME' by default or 'jenkins-experimental/jenkinsfile-runner-test' if it is run from a setUp function"
         return 1
     fi
 
