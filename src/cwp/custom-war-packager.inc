@@ -22,13 +22,13 @@ download_cwp() {
 
         if [[ $version_to_download == *"SNAPSHOT"* ]]
         then
-            wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/snapshots/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$version_to_download/custom-war-packager-cli-$version_to_download-jar-with-dependencies.jar
+            wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/snapshots/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/"$version_to_download"/custom-war-packager-cli-"$version_to_download"-jar-with-dependencies.jar
         else
             if [[ $2 == *"rc"* ]]
             then
-                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/incrementals/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$version_to_download/custom-war-packager-cli-$version_to_download-jar-with-dependencies.jar
+                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/incrementals/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/"$version_to_download"/custom-war-packager-cli-"$version_to_download"-jar-with-dependencies.jar
             else
-                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/releases/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/$version_to_download/custom-war-packager-cli-$version_to_download-jar-with-dependencies.jar
+                wget -O "$cwp_jar_file" https://repo.jenkins-ci.org/releases/io/jenkins/tools/custom-war-packager/custom-war-packager-cli/"$version_to_download"/custom-war-packager-cli-"$version_to_download"-jar-with-dependencies.jar
             fi
         fi
 
@@ -59,7 +59,7 @@ execute_cwp_jar() {
 
     if [ "$#" -gt 3 ]
     then
-        java -jar $2 -configPath $4 -tmpDir "$1/out/tmp/" -version $3
+        java -jar "$2" -configPath "$4" -tmpDir "$1/out/tmp/" -version "$3"
         return 0
     else
         echo "Error. Missing parameters:"
@@ -87,18 +87,19 @@ execute_cwp_jar_and_generate_docker_image() {
         then
             image_tag="$5"
         else
-            if [ -z "${_shunit_test_}" ]
+            # shellcheck disable=SC2154
+            test_name="${_shunit_test_}"
+            if [ -z "$test_name" ]
             then
                 image_tag="jenkins-experimental/jenkinsfile-runner-test"
             else
-                image_tag="jenkins-experimental/${_shunit_test_}"
+                image_tag="jenkins-experimental/$test_name"
             fi
         fi
 
-        result=$(execute_cwp_jar $1 $2 $3 $4)
-        if [ "$?" -eq "0" ]
+        if execute_cwp_jar "$1" "$2" "$3" "$4"
         then
-            docker build -t $image_tag -f "$1/out/tmp/output/Dockerfile" "$1/out/tmp/output/"
+            docker build -t "$image_tag" -f "$1/out/tmp/output/Dockerfile" "$1/out/tmp/output/"
             return 0
         else
             return 1
@@ -126,10 +127,9 @@ download_execute_and_generate_docker_image_with_cwp() {
 
     if [ "$#" -gt 3 ]
     then
-        cwp_jar_file=$(download_cwp $1 $2)
-        if [ "$?" -eq "0" ]
+        cwp_jar_file=$(download_cwp "$1" "$2")
+        if execute_cwp_jar_and_generate_docker_image "$1" "$cwp_jar_file" "$3" "$4" "$5"
         then
-            execute_cwp_jar_and_generate_docker_image "$1" "$cwp_jar_file" "$3" "$4" "$5"
             return 0
         else
             return 1
@@ -179,7 +179,7 @@ generate_docker_image_from_cwp_docker_image() {
 
         docker pull jenkins/custom-war-packager
         docker run --rm -v "$work_directory/tmp":/tmp -v "$1":/sources/packager-config.yml jenkins/custom-war-packager -configPath /sources/packager-config.yml -tmpDir /tmp/app
-        docker build -t $image_tag -f "$work_directory/tmp/app/output/Dockerfile" "$work_directory/tmp/app/output"
+        docker build -t "$image_tag" -f "$work_directory/tmp/app/output/Dockerfile" "$work_directory/tmp/app/output"
         return 0
     else
         echo "Error. Missing parameters:"

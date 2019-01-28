@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
 
-sources=$(dirname "${BASH_SOURCE[0]}")
+root_directory=$(dirname "${BASH_SOURCE[0]}")
+sources="$root_directory/src"
 export DEFAULT_CWP_VERSION="1.5"
 
+# shellcheck source=src/utilities/utils.inc
 . "$sources"/utilities/utils.inc
-. "$sources"/utilities/cwp/custom-war-packager.inc
-. "$sources"/utilities/jfr/jenkinsfile-runner.inc
+# shellcheck source=src/cwp/custom-war-packager.inc
+. "$sources"/cwp/custom-war-packager.inc
+# shellcheck source=src/jfr/jenkinsfile-runner.inc
+. "$sources"/jfr/jenkinsfile-runner.inc

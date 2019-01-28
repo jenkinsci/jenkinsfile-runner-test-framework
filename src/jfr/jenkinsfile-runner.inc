@@ -11,9 +11,9 @@ run_jfr_docker_image() {
     then
         if [ -z "$JAVA_OPTS" ]
         then
-            docker run --rm -v $2:/workspace/Jenkinsfile $1
+            docker run --rm -v "$2":/workspace/Jenkinsfile "$1"
         else
-            docker run -e JAVA_OPTS="$JAVA_OPTS" --rm -v $2:/workspace/Jenkinsfile $1
+            docker run -e JAVA_OPTS="$JAVA_OPTS" --rm -v "$2":/workspace/Jenkinsfile "$1"
         fi
 
         return 0

@@ -15,7 +15,7 @@ remove_string() {
         to_remove="$2"
         length_to_remove=${#to_remove}
 
-        result=$(echo "$origin" | cut -b $length_to_remove-$origin_length)
+        result=$(echo "$origin" | cut -b "$length_to_remove"-"$origin_length")
 
         echo "$result"
         return 0
