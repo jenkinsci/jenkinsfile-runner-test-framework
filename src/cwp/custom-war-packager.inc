@@ -177,7 +177,6 @@ generate_docker_image_from_cwp_docker_image() {
         mkdir -p "$work_directory"
         mkdir -p "$work_directory/tmp"
 
-        docker pull jenkins/custom-war-packager
         docker run --rm -v "$work_directory/tmp":/tmp -v "$1":/sources/packager-config.yml jenkins/custom-war-packager -configPath /sources/packager-config.yml -tmpDir /tmp/app
         docker build -t "$image_tag" -f "$work_directory/tmp/app/output/Dockerfile" "$work_directory/tmp/app/output"
         return 0

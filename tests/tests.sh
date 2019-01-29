@@ -58,9 +58,9 @@ test_download_cwp_version() {
   assertEquals "Should retrieve exit code 0" "0" "$?"
   assertContains "Should contain the the default version" "$default_cwp_jar" "cwp-cli-$DEFAULT_CWP_VERSION.jar"
 
-  another_cwp_jar=$(download_cwp "$test_framework_directory" "1.5")
+  another_cwp_jar=$(download_cwp "$test_framework_directory" "1.3")
   assertEquals "Should retrieve exit code 0" "0" "$?"
-  assertContains "Should contain the the given version" "$another_cwp_jar" "cwp-cli-1.5.jar"
+  assertContains "Should contain the the given version" "$another_cwp_jar" "cwp-cli-1.3.jar"
 }
 
 test_with_tag_using_cwp_docker_image() {

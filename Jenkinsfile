@@ -19,7 +19,6 @@ node {
                 } else {
                     output_file="${it}".substring("${it}".lastIndexOf("/")+1) + ".json"
                 }
-                echo "$output_file"
                 result=sh (script: "docker run -v $current_directory:/mnt koalaman/shellcheck:latest -f json ${it} > $output_file", returnStatus: true)
                 if(result) {
                     global_check_result++
