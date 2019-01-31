@@ -32,7 +32,7 @@ download_cwp() {
             fi
         fi
 
-        downloaded=$(stat -c%s "$cwp_jar_file")
+        downloaded=$(du -k "$cwp_jar_file" | cut -f1)
         if [ "$downloaded" == "0" ]
         then
             echo "CWP jar not found"
