@@ -120,7 +120,7 @@ jenkinsfile_execution_should_fail() {
 
     if [ "$#" -eq 2 ]
     then
-        # The execution should be success while the execution of the pipeline should be faild
+        # The execution should be success while the execution of the pipeline should fail
         execution_success "$1"
         message_contains "$2" "[Pipeline] End of Pipeline"
         message_contains "$2" "Finished: FAILURE"
@@ -140,7 +140,7 @@ jenkinsfile_execution_should_be_unstable() {
 
     if [ "$#" -eq 2 ]
     then
-        # The execution should be success while the execution of the pipeline should fail
+        # The execution should be success while the execution of the pipeline should be unstable
         execution_success "$1"
         message_contains "$2" "[Pipeline] End of Pipeline"
         message_contains "$2" "Finished: UNSTABLE"
