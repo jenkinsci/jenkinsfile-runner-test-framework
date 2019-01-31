@@ -1,5 +1,5 @@
 # Main makefile for the testing framework. It should be executed by the actual project containing the tests
-.PHONY: init verify
+.PHONY: init
 
 init:
 	rm -rf shunit2
