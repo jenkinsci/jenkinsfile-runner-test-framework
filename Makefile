@@ -3,6 +3,9 @@
 
 init:
 	rm -rf shunit2
+	# avoid any cache of checks/tests
+	rm -rf tests/.testing
+	rm -rf checksyntax/.checksyntax
 	# TODO So far, the released tags do not contains all the macros and functions that
 	# master branch does (assertContains, e.g.). Once a new version containing all 
 	# the functionalyty is released we should clone using --branch
@@ -10,3 +13,8 @@ init:
 
 test:
 	$(MAKE) -C tests
+
+syntax:
+	$(MAKE) -C checksyntax
+
+verify: syntax test
