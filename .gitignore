@@ -3,3 +3,4 @@
 out
 .cwp-build/
 tests/.testing
+shunit2/

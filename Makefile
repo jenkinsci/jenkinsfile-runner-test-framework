@@ -1,8 +1,11 @@
 # Main makefile for the testing framework. It should be executed by the actual project containing the tests
-.PHONY: init
+.PHONY: init verify
 
 init:
 	rm -rf shunit2
+	# avoid any cache of checks/tests
+	rm -rf tests/.testing
+	rm -rf checksyntax/.checksyntax
 	# TODO So far, the released tags do not contains all the macros and functions that
 	# master branch does (assertContains, e.g.). Once a new version containing all 
 	# the functionalyty is released we should clone using --branch
