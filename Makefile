@@ -10,3 +10,8 @@ init:
 
 test:
 	$(MAKE) -C tests
+
+syntax:
+	$(MAKE) -C checksyntax
+
+verify: syntax test
