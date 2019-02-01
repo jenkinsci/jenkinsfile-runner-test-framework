@@ -10,6 +10,8 @@ export DEFAULT_CWP_VERSION="1.5"
 . "$sources"/utilities/utils.inc
 # shellcheck source=src/hooks/result.inc
 . "$sources"/hooks/result.inc
+# shellcheck source=src/hooks/workspace.inc
+. "$sources"/hooks/workspace.inc
 # shellcheck source=src/cwp/custom-war-packager.inc
 . "$sources"/cwp/custom-war-packager.inc
 # shellcheck source=src/jfr/jenkinsfile-runner.inc
