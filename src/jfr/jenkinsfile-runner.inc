@@ -9,6 +9,9 @@ run_jfr_docker_image() {
 
     if [ "$#" -gt 1 ]
     then
+        docker run -e JAVA_OPTS="$JAVA_OPTS $3" --rm -v "$2":/workspace/Jenkinsfile "$1"
+    elif [ "$#" -gt 1 ]
+    then
         if [ -z "$JAVA_OPTS" ]
         then
             docker run --rm -v "$2":/workspace/Jenkinsfile "$1"
