@@ -51,7 +51,7 @@ workspace_exists() {
 
 }
 
-# Check if a directory does not exists
+# Check if a directory does not exist
 # $1: (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined.
 # If the env variable is set, this parameter will override it
 workspace_does_not_exist() {
@@ -162,7 +162,7 @@ file_contains_text() {
 
 }
 
-# Check if a file does not contains a test
+# Check if a file does not contains a text
 # $1: Text to check
 # $2: File to check
 # $3: (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined.
