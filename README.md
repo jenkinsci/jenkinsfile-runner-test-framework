@@ -40,7 +40,7 @@ The Makefile to init the framework will download the shUnit2 library so any proj
 
 ### Init the framework in the test script
 
-Jenkinsfile Runner Test Framework unifies all the global configuration and the files to include in a single script _init-jfr-test-framework.inc_, so we just have to invoke and load it.
+Jenkinsfile Runner Test Framework unifies all the global configuration and the files to include in a single script `init-jfr-test-framework.inc`, so we just have to invoke and load it.
 
 ```
 test_framework_directory="path_to_jenkinsfile_runner_test_framework"
@@ -63,6 +63,8 @@ test_example_that_download_CWP_jar_generate_docker_image_and_run_jenkinsfile() {
     jenkinsfile_execution_should_succed "$?" "$result"
 }
 ```
+
+The last step is to init all the framework invoking the `init_framework` function, which is defined in the `init-jfr-test-framework.inc` script. This function *must be invoked at the end of the test shell script so shUnit2 is loaded properly*.
 
 ## Contributing
 In case someone is interested on contributing, the Jenkinsfile Runner Test Framework gives the opportunity to check any change:
