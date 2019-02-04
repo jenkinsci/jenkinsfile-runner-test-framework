@@ -51,10 +51,10 @@ workspace_exists() {
 
 }
 
-# Check if a directory exists
+# Check if a directory does not exists
 # $1: (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined.
 # If the env variable is set, this parameter will override it
-workspace_does_not_exists() {
+workspace_does_not_exist() {
 
     workspace_dir=$(read_workspace "$1")
     assertNotEquals "Workspace is not configured. Please set the WORKSPACE environment variable or pass it as parameter" "" "$workspace_dir"
@@ -129,7 +129,7 @@ file_does_not_exist_in_workspace() {
 
 }
 
-# Check if a file contains a test
+# Check if a file contains a text
 # $1: Text to check
 # $2: File to check
 # $3: (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined.

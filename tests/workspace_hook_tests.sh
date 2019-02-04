@@ -28,8 +28,8 @@ test_workspace_exists() {
   workspace_exists "$sh_unit_directory"
 }
 
-test_workspace_does_not_exists() {
-  workspace_does_not_exists "$working_directory/fake_directory"
+test_workspace_does_not_exist() {
+  workspace_does_not_exist "$working_directory/fake_directory"
 }
 
 test_file_exists_in_workspace() {
