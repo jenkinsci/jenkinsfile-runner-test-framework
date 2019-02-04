@@ -4,7 +4,19 @@ set -e
 # Path to this source file, stored in BASH_SOURCE
 root_directory=$(dirname "${BASH_SOURCE[0]}")
 sources="$root_directory/src"
+sh_unit_directory="$root_directory/tests/.testing/shunit2"
 export DEFAULT_CWP_VERSION="1.5"
+
+if [ ! -d "$sh_unit_directory" ]
+then
+    if [ -z "$1" ] || [ ! -d "$1" ]
+    then
+        echo "[ERROR] shUnit2 has not been properly initialized"
+        exit 1
+    else
+        sh_unit_directory="$1"
+    fi
+fi
 
 # shellcheck source=src/utilities/utils.inc
 . "$sources"/utilities/utils.inc
@@ -14,3 +26,7 @@ export DEFAULT_CWP_VERSION="1.5"
 . "$sources"/cwp/custom-war-packager.inc
 # shellcheck source=src/jfr/jenkinsfile-runner.inc
 . "$sources"/jfr/jenkinsfile-runner.inc
+
+init_framework() {
+    . $sh_unit_directory/shunit2
+}

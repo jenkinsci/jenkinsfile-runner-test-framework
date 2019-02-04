@@ -4,7 +4,6 @@ set -e
 current_directory=$(pwd)
 test_framework_directory="$current_directory/.."
 working_directory="$current_directory/.testing"
-sh_unit_directory="$working_directory/shunit2"
 
 version="256.0-test"
 jenkinsfile_runner_tag="jenkins-experimental/jenkinsfile-runner-test-image"
@@ -88,4 +87,4 @@ test_jenkinsfile_unstable() {
   jenkinsfile_execution_should_be_unstable "$?" "$result"
 }
 
-. $sh_unit_directory/shunit2
+init_framework
