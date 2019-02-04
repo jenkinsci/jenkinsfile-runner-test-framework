@@ -4,7 +4,7 @@ set -e
 # Path to this source file, stored in BASH_SOURCE
 root_directory=$(dirname "${BASH_SOURCE[0]}")
 sources="$root_directory/src"
-sh_unit_directory="$root_directory/tests/.testing/shunit2"
+sh_unit_directory="$root_directory/.shunit2"
 export DEFAULT_CWP_VERSION="1.5"
 
 if [ ! -d "$sh_unit_directory" ]

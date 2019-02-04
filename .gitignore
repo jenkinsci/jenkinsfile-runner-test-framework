@@ -3,4 +3,5 @@
 out
 .cwp-build/
 tests/.testing
-shunit2/
+checksyntax/.checksyntax/
+.shunit2/

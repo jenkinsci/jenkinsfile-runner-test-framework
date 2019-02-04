@@ -13,11 +13,11 @@ downloaded_cwp_jar="to_update"
 . $test_framework_directory/init-jfr-test-framework.inc
 
 oneTimeSetUp() {
-  downloaded_cwp_jar=$(download_cwp "$test_framework_directory")
+  downloaded_cwp_jar=$(download_cwp "$working_directory")
 }
 
 test_with_tag() {
-  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
+  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
   execution_should_success "$?" "$jfr_tag" "$jenkinsfile_runner_tag"
   
   result=$(run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_tag/Jenkinsfile")
@@ -25,7 +25,7 @@ test_with_tag() {
 }
 
 test_java_opts() {
-  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
+  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
   execution_should_success "$?" "$jfr_tag" "$jenkinsfile_runner_tag"
 
   result=$(run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_tag/Jenkinsfile")
@@ -41,15 +41,15 @@ test_java_opts() {
 }
 
 test_with_default_tag() {
-  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" | grep 'Successfully tagged')
+  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" | grep 'Successfully tagged')
   execution_should_success "$?" "$jfr_tag" "test_with_default_tag"
 }
 
 test_download_cwp_version() {
-  default_cwp_jar=$(download_cwp "$test_framework_directory")
+  default_cwp_jar=$(download_cwp "$working_directory")
   execution_should_success "$?" "$default_cwp_jar" "cwp-cli-$DEFAULT_CWP_VERSION.jar"
 
-  another_cwp_jar=$(download_cwp "$test_framework_directory" "1.3")
+  another_cwp_jar=$(download_cwp "$working_directory" "1.3")
   execution_should_success "$?" "$another_cwp_jar" "cwp-cli-1.3.jar"
 }
 
@@ -67,12 +67,12 @@ test_with_default_tag_using_cwp_docker_image() {
 }
 
 test_failing_docker_image() {
-  result=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_failing_docker_image/packager-config.yml")
+  result=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_failing_docker_image/packager-config.yml")
   docker_generation_should_fail "$?" "$result"
 }
 
 test_jenkinsfile_fail() {
-  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
+  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
   execution_should_success "$?" "$jfr_tag" "$jenkinsfile_runner_tag"
 
   result=$(run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_jenkinsfile_fail/Jenkinsfile")
@@ -80,7 +80,7 @@ test_jenkinsfile_fail() {
 }
 
 test_jenkinsfile_unstable() {
-  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
+  jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
   execution_should_success "$?" "$jfr_tag" "$jenkinsfile_runner_tag"
 
   result=$(run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_jenkinsfile_unstable/Jenkinsfile")
