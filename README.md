@@ -1,5 +1,5 @@
 # Jenkinsfile Runner Test Framework
-This repository provides a test harness for verifying Jenkinsfile Runner Docker images. That image can be already built or it can be built using Custom War Packager and the set of functions provided by the framework.
+This repository provides a test harness for verifying Jenkinsfile Runner Docker images. That image can be already built or it can be built using Custom War Packager and the set of utility functions provided by the framework.
 
 The framework takes a Jenkinsfile from a directory and runs against the image, waiting for its completion, and then verifies log outputs and results.
 
@@ -9,7 +9,7 @@ The framework takes a Jenkinsfile from a directory and runs against the image, w
 The test suite is designed to run on Linux, targeting JFR execution only in Docker containers.
 It relies on shUnit2 and its hooks allow to check the log outputs, the content in the workspace and the result of the execution in an easy way.
 
-In case it's desired to build the docker image using the Custom War Package it is possible to specify a concrete version (released, timestamped snapshot or incremental), although the framework defines a default version.
+In case it's desired to build the docker image using the Custom War Package it is possible to specify a particular version (released, timestamped snapshot or incremental), although the framework defines a default version.
 
 The test framework supports timeouts (_in progress at the time of writing this README file_) and `JAVA_OPTS` environment variable.
 
