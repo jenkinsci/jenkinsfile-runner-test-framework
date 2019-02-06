@@ -7,6 +7,7 @@ execution_success() {
 
     if [ "$#" -eq 1 ]
     then
+        # shellcheck disable=SC2154
         if [ -z "${_shunit_test_}" ]
         then
             test_name="Execution"
