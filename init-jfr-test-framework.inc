@@ -8,6 +8,8 @@ export DEFAULT_CWP_VERSION="1.5"
 
 # shellcheck source=src/utilities/utils.inc
 . "$sources"/utilities/utils.inc
+# shellcheck source=src/hooks/logs.inc
+. "$sources"/hooks/logs.inc
 # shellcheck source=src/hooks/result.inc
 . "$sources"/hooks/result.inc
 # shellcheck source=src/cwp/custom-war-packager.inc
