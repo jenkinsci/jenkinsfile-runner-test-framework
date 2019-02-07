@@ -5,3 +5,4 @@ out
 tests/.testing
 checksyntax/.checksyntax/
 .shunit2/
+*.log
