@@ -35,7 +35,7 @@ logs_contains() {
     else
         echo "Error. Missing parameters:"
         echo "   Expected contained value"
-        echo "   (Optional) Returned message"
+        echo "   (Optional) Logs from the test or returned message"
         return 1
     fi
 
@@ -75,7 +75,7 @@ logs_not_contains() {
     else
         echo "Error. Missing parameters:"
         echo "   Expected contained value"
-        echo "   (Optional) Returned message"
+        echo "   (Optional) Logs from the test or returned message"
         return 1
     fi
 

@@ -33,22 +33,22 @@ execution_success() {
 # Check a generic execution is ok
 # $1: Returned code by the process
 # $2: Expected excerpt
-# $2: (Optional) Execution log
+# $3: (Optional) Execution log
 execution_should_success() {
 
     if [ "$#" -eq 3 ]
     then
         execution_success "$1"
         logs_contains "$2" "$3"
-    elif [ "$#" -eq 3 ]
+    elif [ "$#" -eq 2 ]
     then
         execution_success "$1"
         logs_contains "$2"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
-        echo "   Expected message"
+        echo "   Expected excerpt"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -65,14 +65,14 @@ jenkinsfile_execution_should_succed() {
         logs_contains "[Pipeline] End of Pipeline" "$2"
         logs_contains "Finished: SUCCESS" "$2"
     elif [ "$#" -eq 1 ]
-        then
-            execution_success "$1"
-            logs_contains "[Pipeline] End of Pipeline"
-            logs_contains "Finished: SUCCESS"
+    then
+        execution_success "$1"
+        logs_contains "[Pipeline] End of Pipeline"
+        logs_contains "Finished: SUCCESS"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -98,7 +98,7 @@ jenkinsfile_execution_should_fail() {
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -124,7 +124,7 @@ jenkinsfile_execution_should_be_unstable() {
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
