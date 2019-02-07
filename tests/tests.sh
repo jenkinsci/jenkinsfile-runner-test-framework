@@ -16,6 +16,15 @@ oneTimeSetUp() {
   downloaded_cwp_jar=$(download_cwp "$working_directory")
 }
 
+setUp() {
+if [[ ${_shunit_test_} == *"using_cwp_docker_image"* ]]
+  then
+    set_timeout 900
+  else
+    set_timeout -1
+  fi
+}
+
 test_with_tag() {
   jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_tag/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
   execution_should_success "$?" "$jfr_tag" "$jenkinsfile_runner_tag"
@@ -46,10 +55,13 @@ test_with_default_tag() {
 }
 
 test_download_cwp_version() {
-  default_cwp_jar=$(download_cwp "$working_directory")
+  test_download_working_directory="$working_directory/test_download_cwp_version"
+  rm -rf "$test_download_working_directory"
+  mkdir "$test_download_working_directory"
+  default_cwp_jar=$(download_cwp "$test_download_working_directory")
   execution_should_success "$?" "$default_cwp_jar" "cwp-cli-$DEFAULT_CWP_VERSION.jar"
 
-  another_cwp_jar=$(download_cwp "$working_directory" "1.3")
+  another_cwp_jar=$(download_cwp "$test_download_working_directory" "1.3")
   execution_should_success "$?" "$another_cwp_jar" "cwp-cli-1.3.jar"
 }
 

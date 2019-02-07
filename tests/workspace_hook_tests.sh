@@ -6,7 +6,6 @@ test_framework_directory="$current_directory/.."
 testing_directory="$current_directory/.testing"
 working_directory="$testing_directory/workspace-test"
 test_file="test.txt"
-sh_unit_directory="$testing_directory/shunit2"
 
 . $test_framework_directory/init-jfr-test-framework.inc
 
@@ -25,7 +24,7 @@ oneTimeTearDown() {
 
 test_workspace_exists() {
   # Passing another directory to check if exist so we do not use the WORKSPACE environment variable
-  workspace_exists "$sh_unit_directory"
+  workspace_exists "$test_framework_directory"
 }
 
 test_workspace_does_not_exist() {
@@ -48,4 +47,4 @@ test_file_does_not_contains_text() {
   file_does_not_contains_text "unexpected text" "$test_file"
 }
 
-. $sh_unit_directory/shunit2
+init_framework
