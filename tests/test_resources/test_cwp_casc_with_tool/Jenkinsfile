@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    tools {
+        //jdk 'jdk8',
+        maven 'maven'
+    }
+    stages {
+        stage('install maven') {
+            steps {
+            //
+            // hackerific: install maven first so we can use it....
+            //
+            sh '''
+                mkdir /var/jenkins_home/tools
+                cd /var/jenkins_home/tools
+                rm -rf apache-maven-3.3.3-bin*
+                wget https://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+                gunzip apache-maven-3.3.3-bin.tar.gz
+                tar -xvf apache-maven-3.3.3-bin.tar
+            '''
+            }
+
+        }
+        stage('build') {
+            steps {
+                sh 'mvn --version'
+          //      sh 'java -version'
+            }
+        }
+    }
+}
