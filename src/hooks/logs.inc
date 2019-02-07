@@ -8,12 +8,7 @@ logs_contains() {
 
     if [ "$#" -ge 1 ]
     then
-        if [ -z "${_shunit_test_}" ]
-        then
-            test_name="Message from execution"
-        else
-            test_name="Message from execution of test '${_shunit_test_}'"
-        fi
+        test_name=$(get_test_name_message)
 
         if [ "$#" -eq 2 ]
         then
@@ -48,12 +43,7 @@ logs_not_contains() {
 
     if [ "$#" -ge 1 ]
     then
-        if [ -z "${_shunit_test_}" ]
-        then
-            test_name="Message from execution"
-        else
-            test_name="Message from execution of test '${_shunit_test_}'"
-        fi
+        test_name=$(get_test_name_message)
 
         if [ "$#" -eq 2 ]
         then
@@ -79,4 +69,16 @@ logs_not_contains() {
         return 1
     fi
 
+}
+
+# Get proper message to display when referring to the execution
+get_test_name_message() {
+    if [ -z "${_shunit_test_}" ]
+    then
+        test_name="Message from execution"
+    else
+        test_name="Message from execution of test '${_shunit_test_}'"
+    fi
+
+    echo "$test_name"
 }
