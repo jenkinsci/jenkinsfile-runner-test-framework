@@ -20,7 +20,7 @@ create_test_file() {
 }
 
 # Set the timeout.
-# $1: timeout in seconds. A negative value is not allowed. Set 0 to disable the timeout and -1 to reset to default value
+# $1: timeout in seconds. It must be a number greater than 0. Set 0 to disable the timeout and -1 to reset to default value
 set_timeout() {
 
     if [ "$#" -eq 1 ]
@@ -38,12 +38,12 @@ set_timeout() {
             export TIMEOUT=$default_timeout
             return 0
         else
-            echo "[ERROR] Wrong timeout value. It must be a positive integer, 0 to disable or -1 to reset to default value"
+            echo "[ERROR] Wrong timeout value. The timeout value is a number of seconds greater than 0. Use '0' to disable the timeout and '-1' to reset to default value"
             return 1
         fi
     else
         echo "Error. Wrong number of parameters. Use timeout timeout_value"
-        echo "   The timeout value is a positive integer. Use '0' to disable the timeout and '-1' to reset to default value"
+        echo "   The timeout value is a number of seconds greater than 0. Use '0' to disable the timeout and '-1' to reset to default value"
         return 1
     fi
 
@@ -80,7 +80,7 @@ create_test_with_template() {
 }
 
 # Execute a function setting a timeout. If the timeout happens then the execution of the function is killed and a message is displayed
-# $1: name of the fucntion to execute
+# $1: name of the function to execute
 run_with_timeout() {
 
     cmd="$1"
