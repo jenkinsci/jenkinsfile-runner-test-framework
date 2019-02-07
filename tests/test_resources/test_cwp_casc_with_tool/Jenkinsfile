@@ -1,14 +1,13 @@
 pipeline {
     agent any
     tools {
-        //jdk 'jdk8',
         maven 'maven'
     }
     stages {
         stage('install maven') {
             steps {
             //
-            // hackerific: install maven first so we can use it....
+            // FIXME see if we can updated casc.yml to install maven for us.
             //
             sh '''
                 mkdir /var/jenkins_home/tools
@@ -24,7 +23,6 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn --version'
-          //      sh 'java -version'
             }
         }
     }
