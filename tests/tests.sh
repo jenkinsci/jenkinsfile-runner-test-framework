@@ -87,4 +87,19 @@ test_jenkinsfile_unstable() {
   jenkinsfile_execution_should_be_unstable "$?"
 }
 
+test_all_hooks() {
+  build_result=$(generate_docker_image_from_cwp_docker_image "$current_directory/test_resources/test_all_hooks/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
+  execution_should_success "$?" "$jenkinsfile_runner_tag" "$build_result"
+
+  export JAVA_OPTS="-Djenkins.model.Jenkins.workspacesDir=/build"
+
+  run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_all_hooks/Jenkinsfile" "-v $working_directory/files:/build"
+
+  jenkinsfile_execution_should_succeed "$?"
+  logs_contains "This is the message to find in the logs"
+  file_contains_text "This is the message to find in the logs" "message.txt" "$working_directory/files"
+
+  unset JAVA_OPTS
+}
+
 init_framework

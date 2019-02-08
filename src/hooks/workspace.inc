@@ -72,7 +72,7 @@ workspace_does_not_exist() {
 }
 
 # Check if a file exists in the workspace
-# $1: File to check the existance
+# $1: File to check the existence
 # $2: (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined.
 # If the env variable is set, this parameter will override it
 file_exists_in_workspace() {
@@ -93,7 +93,7 @@ file_exists_in_workspace() {
         return 0
     else
         echo "Error. Missing parameters:"
-        echo "   File to check the existance"
+        echo "   File to check the existence"
         echo "   (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined"
         return 1
     fi
@@ -101,7 +101,7 @@ file_exists_in_workspace() {
 }
 
 # Check if a file does not exist in the workspace
-# $1: File to check the existance
+# $1: File to check the existence
 # $2: (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined.
 # If the env variable is set, this parameter will override it
 file_does_not_exist_in_workspace() {
@@ -122,7 +122,7 @@ file_does_not_exist_in_workspace() {
         return 0
     else
         echo "Error. Missing parameters:"
-        echo "   File to check the existance"
+        echo "   File to check the existence"
         echo "   (Optional) Workspace directory. If not specified, 'WORKSPACE' env variable must be defined"
         return 1
     fi

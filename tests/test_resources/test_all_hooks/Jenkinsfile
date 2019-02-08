@@ -1,0 +1,8 @@
+stage('Echo message') {
+    node {
+        String message = "This is the message to find in the logs"
+
+        echo message
+        writeFile file: 'message.txt', text: message
+    }
+}
