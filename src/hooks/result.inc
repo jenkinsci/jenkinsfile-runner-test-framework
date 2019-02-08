@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-# Path to this source file, stored in BASH_SOURCE
-root_directory=$(dirname "${BASH_SOURCE[0]}")
-# shellcheck source=src/utilities/utils.inc
-. "$root_directory"/logs.inc
-
 # Check the execution of some command is ok
 # $1: Returned code by process
 execution_success() {
