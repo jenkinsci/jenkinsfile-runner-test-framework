@@ -78,5 +78,4 @@ plugins:
       version: "1.1"
 systemProperties: {
     jenkins.model.Jenkins.slaveAgentPort: "50000",
-    jenkins.model.Jenkins.slaveAgentPortEnforce: "true",
-    jenkins.model.Jenkins.workspacesDir: "/build"}
+    jenkins.model.Jenkins.slaveAgentPortEnforce: "true"}
