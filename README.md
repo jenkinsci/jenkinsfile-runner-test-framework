@@ -60,7 +60,7 @@ test_example_that_download_CWP_jar_generate_docker_image_and_run_jenkinsfile() {
 
     result=$(run_jfr_docker_image "$jenkinsfile_runner_tag" "path_to/Jenkinsfile")
     
-    jenkinsfile_execution_should_succed "$?" "$result"
+    jenkinsfile_execution_should_succeed "$?" "$result"
 }
 ```
 

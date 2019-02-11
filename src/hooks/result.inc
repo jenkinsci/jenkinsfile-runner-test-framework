@@ -52,7 +52,7 @@ execution_should_success() {
 # Check the execution of the Jenkinsfile should succed
 # $1: Returned code by the process
 # $2: (Optional) Execution log
-jenkinsfile_execution_should_succed() {
+jenkinsfile_execution_should_succeed() {
 
     if [ "$#" -eq 2 ]
     then
