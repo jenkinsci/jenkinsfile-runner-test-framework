@@ -23,6 +23,8 @@ fi
 . "$sources"/utilities/utils.inc
 # shellcheck source=src/utilities/timeout.inc
 . "$sources"/utilities/timeout.inc
+# shellcheck source=src/hooks/logs.inc
+. "$sources"/hooks/logs.inc
 # shellcheck source=src/hooks/result.inc
 . "$sources"/hooks/result.inc
 # shellcheck source=src/hooks/workspace.inc

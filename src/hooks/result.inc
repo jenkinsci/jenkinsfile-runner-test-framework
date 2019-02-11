@@ -25,71 +25,25 @@ execution_success() {
 
 }
 
-# Check the execution message of some command contains an expected pattern
-# $1: Returned message
-# $2: Expected contained value
-message_contains() {
-
-    if [ "$#" -eq 2 ]
-    then
-        if [ -z "${_shunit_test_}" ]
-        then
-            test_name="Message from execution"
-        else
-            test_name="Message from execution of test '${_shunit_test_}'"
-        fi
-
-        assertContains "$test_name should contain '$2'" "$1" "$2"
-        return 0
-    else
-        echo "Error. Missing parameters:"
-        echo "   Returned message"
-        echo "   Expected contained value"
-        return 1
-    fi
-
-}
-
-# Check the execution message of some command contains an expected pattern
-# $1: Returned message
-# $2: Expected contained value
-message_not_contains() {
-
-    if [ "$#" -eq 2 ]
-    then
-        if [ -z "${_shunit_test_}" ]
-        then
-            test_name="Message from execution"
-        else
-            test_name="Message from execution of test '${_shunit_test_}'"
-        fi
-
-        assertNotContains "$test_name should not contain '$2'" "$1" "$2"
-        return 0
-    else
-        echo "Error. Missing parameters:"
-        echo "   Returned message"
-        echo "   Expected contained value"
-        return 1
-    fi
-
-}
-
 # Check a generic execution is ok
 # $1: Returned code by the process
-# $2: Execution log
-# $3: Expected excerpt
+# $2: Expected excerpt
+# $3: (Optional) Execution log
 execution_should_success() {
 
     if [ "$#" -eq 3 ]
     then
         execution_success "$1"
-        message_contains "$2" "$3"
+        logs_contains "$2" "$3"
+    elif [ "$#" -eq 2 ]
+    then
+        execution_success "$1"
+        logs_contains "$2"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
-        echo "   Expected message"
+        echo "   Expected excerpt"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -97,18 +51,23 @@ execution_should_success() {
 
 # Check the execution of the Jenkinsfile should succed
 # $1: Returned code by the process
-# $2: Execution log
-jenkinsfile_execution_should_succed() {
+# $2: (Optional) Execution log
+jenkinsfile_execution_should_succeed() {
 
     if [ "$#" -eq 2 ]
     then
         execution_success "$1"
-        message_contains "$2" "[Pipeline] End of Pipeline"
-        message_contains "$2" "Finished: SUCCESS"
+        logs_contains "[Pipeline] End of Pipeline" "$2"
+        logs_contains "Finished: SUCCESS" "$2"
+    elif [ "$#" -eq 1 ]
+    then
+        execution_success "$1"
+        logs_contains "[Pipeline] End of Pipeline"
+        logs_contains "Finished: SUCCESS"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -116,19 +75,25 @@ jenkinsfile_execution_should_succed() {
 
 # Check the execution of the Jenkinsfile should fail
 # $1: Returned code by the process
-# $2: Execution log
+# $2: (Optional) Execution log
 jenkinsfile_execution_should_fail() {
 
     if [ "$#" -eq 2 ]
     then
         # The execution should be success while the execution of the pipeline should fail
         execution_success "$1"
-        message_contains "$2" "[Pipeline] End of Pipeline"
-        message_contains "$2" "Finished: FAILURE"
+        logs_contains "[Pipeline] End of Pipeline" "$2"
+        logs_contains "Finished: FAILURE" "$2"
+    elif [ "$#" -eq 1 ]
+    then
+        # The execution should be success while the execution of the pipeline should fail
+        execution_success "$1"
+        logs_contains "[Pipeline] End of Pipeline"
+        logs_contains "Finished: FAILURE"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -136,19 +101,25 @@ jenkinsfile_execution_should_fail() {
 
 # Check the execution of the Jenkinsfile should be unstable
 # $1: Returned code by the process
-# $2: Execution log
+# $2: (Optional) Execution log
 jenkinsfile_execution_should_be_unstable() {
 
     if [ "$#" -eq 2 ]
     then
         # The execution should be success while the execution of the pipeline should be unstable
         execution_success "$1"
-        message_contains "$2" "[Pipeline] End of Pipeline"
-        message_contains "$2" "Finished: UNSTABLE"
+        logs_contains "[Pipeline] End of Pipeline" "$2"
+        logs_contains "Finished: UNSTABLE" "$2"
+    elif [ "$#" -eq 1 ]
+    then
+        # The execution should be success while the execution of the pipeline should be unstable
+        execution_success "$1"
+        logs_contains "[Pipeline] End of Pipeline"
+        logs_contains "Finished: UNSTABLE"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
-        echo "   Execution log"
+        echo "   (Optional) Execution log"
         return 1
     fi
 
@@ -163,7 +134,7 @@ docker_generation_should_fail() {
     then
         # The execution should be success while the generation should have error messages in the log
         execution_success "$1"
-        message_contains "$2" "[ERROR]"
+        logs_contains "[ERROR]" "$2"
     else
         echo "Error. Missing parameters:"
         echo "   Returned code by the process"
