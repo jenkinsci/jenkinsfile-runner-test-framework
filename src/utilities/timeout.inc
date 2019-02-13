@@ -115,6 +115,6 @@ kill_process_and_subprocess() {
         kill_process_and_subprocess "$subprocess"
     done
     # Kill execution
-    kill "$1" 2> /dev/null 
+    timeout 30 kill "$1" 2> /dev/null 
 
 }

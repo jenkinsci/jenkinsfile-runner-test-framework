@@ -17,7 +17,7 @@ oneTimeSetUp() {
 }
 
 setUp() {
-if [[ ${_shunit_test_} == *"using_cwp_docker_image"* ]]
+  if [[ ${_shunit_test_} == *"using_cwp_docker_image"* ]]
   then
     set_timeout 900
   else
