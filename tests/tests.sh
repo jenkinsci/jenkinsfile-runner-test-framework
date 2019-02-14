@@ -21,7 +21,7 @@ test_with_tag() {
   execution_should_success "$?" "$jenkinsfile_runner_tag" "$jfr_tag"
 
   run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_tag/Jenkinsfile"
-  jenkinsfile_execution_should_succed "$?"
+  jenkinsfile_execution_should_succeed "$?"
 }
 
 test_java_opts() {
@@ -29,7 +29,7 @@ test_java_opts() {
   execution_should_success "$?" "$jenkinsfile_runner_tag" "$jfr_tag"
 
   run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_tag/Jenkinsfile"
-  jenkinsfile_execution_should_succed "$?"
+  jenkinsfile_execution_should_succeed "$?"
 
   export JAVA_OPTS="-Xmx1M -Xms100G"
   run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_tag/Jenkinsfile"
@@ -58,7 +58,7 @@ test_with_tag_using_cwp_docker_image() {
   execution_should_success "$?" "$jenkinsfile_runner_tag" "$jfr_tag"
 
   run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_tag_using_cwp_docker_image/Jenkinsfile"
-  jenkinsfile_execution_should_succed "$?"
+  jenkinsfile_execution_should_succeed "$?"
 }
 
 test_with_default_tag_using_cwp_docker_image() {
@@ -93,13 +93,23 @@ test_all_hooks() {
 
   export JAVA_OPTS="-Djenkins.model.Jenkins.workspacesDir=/build"
 
-  run_jfr_docker_image "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_all_hooks/Jenkinsfile" "-v $working_directory/files:/build"
+  run_jfr_docker_image_with_docker_options "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_all_hooks/Jenkinsfile" "-v $working_directory/files:/build"
 
   jenkinsfile_execution_should_succeed "$?"
   logs_contains "This is the message to find in the logs"
   file_contains_text "This is the message to find in the logs" "message.txt" "$working_directory/files"
 
   unset JAVA_OPTS
+}
+
+test_with_jfr_options() {
+ jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$working_directory" "$downloaded_cwp_jar" "$version" "$current_directory/test_resources/test_with_jfr_options/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
+ execution_should_success "$?" "$jenkinsfile_runner_tag" "$jfr_tag"
+
+ param="-a param1=Hello"
+ run_jfr_docker_image_with_jfr_options "$jenkinsfile_runner_tag" "$current_directory/test_resources/test_with_jfr_options/Jenkinsfile" "$param"
+ jenkinsfile_execution_should_succeed "$?"
+ logs_contains "Value for param1: Hello"
 }
 
 init_framework

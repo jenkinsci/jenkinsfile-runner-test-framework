@@ -66,14 +66,14 @@ run_jfr_docker_image_with_docker_and_jfr_options() {
             then
                 docker run --rm $3 -v "$2":/workspace/Jenkinsfile "$1" $4 2>&1 | tee "${_shunit_test_}.log"
             else
-                docker run --rm $3 -v "$2":/workspace/Jenkinsfile "$1 $4"
+                docker run --rm $3 -v "$2":/workspace/Jenkinsfile "$1" $4
             fi
         else
             if [ ! -z "${_shunit_test_}" ]
             then
                 docker run -e JAVA_OPTS="$JAVA_OPTS" --rm $3 -v "$2":/workspace/Jenkinsfile "$1" $4 2>&1 | tee "${_shunit_test_}.log"
             else
-                docker run -e JAVA_OPTS="$JAVA_OPTS" --rm $3 -v "$2":/workspace/Jenkinsfile "$1 $4"
+                docker run -e JAVA_OPTS="$JAVA_OPTS" --rm $3 -v "$2":/workspace/Jenkinsfile "$1" $4
             fi
         fi
     else

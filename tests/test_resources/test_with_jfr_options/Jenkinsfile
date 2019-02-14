@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'param1', defaultValue: '', description: 'Greeting message')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Hello world!'
+                echo "Value for param1: ${params.param1}"
+            }
+        }
+    }
+}
