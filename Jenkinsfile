@@ -7,27 +7,18 @@ node {
         deleteDir()
         checkout scm
     }
-    
-    stage('shellcheck') {
-        dir('jenkinsfile-runner-test-framework') {
-            global_check_result=0
-            current_directory="${WORKSPACE}/jenkinsfile-runner-test-framework"
-            def incFiles=findFiles(glob: '**/*.inc')
-            incFiles.each{
-                if("${it}".lastIndexOf("/") == -1) {
-                    output_file="${it}.json"
-                } else {
-                    output_file="${it}".substring("${it}".lastIndexOf("/")+1) + ".json"
+
+    stage('sanity check') {
+        withEnv(["PATH=${env.WORKSPACE}/checksyntax:${env.PATH}"]) {
+            dir('jenkinsfile-runner-test-framework') {
+                warnError {
+                    def reportFileName = 'pre-commit.out'
+                    sh """
+                      curl https://pre-commit.com/install-local.py | python -
+                      git diff-tree --no-commit-id --name-only -r \$(git rev-parse HEAD) | xargs pre-commit run --files | tee ${reportFileName}
+                    """
+                    archiveArtifacts artifacts: reportFileName
                 }
-                result=sh (script: "docker run -v $current_directory:/mnt koalaman/shellcheck:stable -f json ${it} > $output_file", returnStatus: true)
-                if(result) {
-                    global_check_result++
-                }
-            }
-            if(global_check_result > 0) {
-                echo "One or more scripts have an invalid sintaxis"
-                currentBuild.result = 'UNSTABLE'
-                archiveArtifacts artifacts: '**/*.inc.json'
             }
         }
     }

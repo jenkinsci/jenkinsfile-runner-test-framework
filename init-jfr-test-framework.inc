@@ -57,7 +57,7 @@ suite() {
     done
     # shellcheck disable=SC1090
     . $timeout_test_file
-	
+
 }
 
 init_framework() {

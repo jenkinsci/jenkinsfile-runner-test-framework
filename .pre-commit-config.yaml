@@ -1,0 +1,19 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.2.3
+    hooks:
+    -   id: check-case-conflict
+    -   id: check-executables-have-shebangs
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: check-yaml
+    -   id: check-xml
+
+-   repo: https://github.com/detailyang/pre-commit-shell.git
+    rev: 1.0.5
+    hooks:
+    -   id: shell-lint
+        name: "Shellscript: lint"
+        stages: [commit]
+        types: [shell]
+        files: \.inc$
