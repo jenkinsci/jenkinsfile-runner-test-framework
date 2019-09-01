@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -e
+set -xe
 
 # Path to this source file
-parent_directory=$(dirname "$(pwd)")
-docker run --rm -t -v "$parent_directory:/mnt" -u "$(id -u):$(id -g)" koalaman/shellcheck:stable "$@"
+parent_directory=$(pwd)
+docker run --rm -t -v "$parent_directory:/mnt" -w /mnt -u "$(id -u):$(id -g)" koalaman/shellcheck:stable "$@"

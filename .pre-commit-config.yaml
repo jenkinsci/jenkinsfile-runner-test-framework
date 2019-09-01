@@ -9,11 +9,10 @@ repos:
     -   id: check-yaml
     -   id: check-xml
 
--   repo: https://github.com/detailyang/pre-commit-shell.git
-    rev: 1.0.5
+-   repo: local
     hooks:
     -   id: shell-lint
         name: "Shellscript: lint"
-        stages: [commit]
-        types: [shell]
+        entry: checksyntax/shellcheck
+        language: script
         files: \.inc$
