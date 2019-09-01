@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xe
+set -e
 
 # Path to this source file
 parent_directory=$(pwd)
