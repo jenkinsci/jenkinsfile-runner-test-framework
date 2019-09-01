@@ -53,13 +53,13 @@ Once the test framework is loaded, all the functions will be available as any ot
 ```
 test_example_that_download_CWP_jar_generate_docker_image_and_run_jenkinsfile() {
     downloaded_cwp_jar=$(download_cwp "$test_framework_directory")
-    
+
     jfr_tag=$(execute_cwp_jar_and_generate_docker_image "$test_framework_directory" "$downloaded_cwp_jar" "$version" "path_to/packager-config.yml" "$jenkinsfile_runner_tag" | grep 'Successfully tagged')
-        
+
     execution_should_success "$?" "$jfr_tag" "$jenkinsfile_runner_tag"
 
     result=$(run_jfr_docker_image "$jenkinsfile_runner_tag" "path_to/Jenkinsfile")
-    
+
     jenkinsfile_execution_should_succeed "$?" "$result"
 }
 ```
@@ -72,6 +72,17 @@ In case someone is interested on contributing, the Jenkinsfile Runner Test Frame
 * In case the contributor would like to check the syntax of the scripts, it's enough to execute `make syntax`
 * In case the desire is to execute the smoke tests, the execution command is `make test`
 * The recommendation is to check and verify both texts and syntax. In that case, just execute `make verify`
+
+### Precommit
+
+This particular process will help to evaluate some linting before committing any changes. Therefore you need the pre-commit.
+
+#### Installation.
+
+Follow https://pre-commit.com/#install and `pre-commit install`
+
+Some hooks might require some extra tools such as:
+- [shellcheck](https://github.com/koalaman/shellcheck#installing)
 
 ## Further reading
 
